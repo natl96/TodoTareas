@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────
+// Tipos
 type TaskStatus = "pending" | "progress" | "completed";
 type TaskPriority = "low" | "medium" | "high";
 type AuthMode = "login" | "register";
@@ -36,7 +36,7 @@ interface AuthFormState {
   password: string;
 }
 
-// ─── Iconos SVG minimalistas ──────────────────────────────────────────────────
+//Iconos SVG minimalistas 
 const IconCheck: React.FC = () => (
   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -77,7 +77,7 @@ const IconList: React.FC = () => (
   </svg>
 );
 
-// ─── Constantes ───────────────────────────────────────────────────────────────
+// Constantes 
 const STORAGE_KEYS = {
   users: "taskflow_users_v1",
   session: "taskflow_session_v1",
@@ -118,7 +118,7 @@ function uid() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-// ─── Componente principal ─────────────────────────────────────────────────────
+// Componente principal
 export default function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [sessionEmail, setSessionEmail] = useState<string>("");
@@ -411,7 +411,7 @@ export default function App() {
     );
   }
 
-  // ── Vista principal (dashboard) ─────────────────────────────────────────────
+  // Vista principal
   return (
     <div className="app-shell">
       <header className="header">
@@ -579,7 +579,6 @@ export default function App() {
         </section>
       </main>
 
-      {/* ── Tablero Kanban ── */}
       <section className="task-columns">
         {STATUS_ORDER.map((status) => (
           <div className="column" key={status}>
