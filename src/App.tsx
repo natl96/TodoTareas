@@ -330,7 +330,7 @@ export default function App() {
     );
   }
 
-  // ── Vista de autenticación ──────────────────────────────────────────────────
+  // Vista de autenticación 
   if (!currentUser) {
     return (
       <div className="auth-page">
