@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 
+// ─── Tipos ────────────────────────────────────────────────────────────────────
 type TaskStatus = "pending" | "progress" | "completed";
 type TaskPriority = "low" | "medium" | "high";
 type AuthMode = "login" | "register";
@@ -35,6 +36,48 @@ interface AuthFormState {
   password: string;
 }
 
+// ─── Iconos SVG minimalistas ──────────────────────────────────────────────────
+const IconCheck: React.FC = () => (
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+const IconClock: React.FC = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
+
+const IconPlay: React.FC = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M5 3l14 9-14 9V3z" />
+  </svg>
+);
+
+const IconCheckCircle: React.FC = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <polyline points="22 4 12 14.01 9 11.01" />
+  </svg>
+);
+
+const IconList: React.FC = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 6h11M9 12h11M9 18h11" />
+    <circle cx="4" cy="6" r="1" fill="currentColor" stroke="none" />
+    <circle cx="4" cy="12" r="1" fill="currentColor" stroke="none" />
+    <circle cx="4" cy="18" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+// ─── Constantes ───────────────────────────────────────────────────────────────
 const STORAGE_KEYS = {
   users: "taskflow_users_v1",
   session: "taskflow_session_v1",
@@ -75,6 +118,7 @@ function uid() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+// ─── Componente principal ─────────────────────────────────────────────────────
 export default function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [sessionEmail, setSessionEmail] = useState<string>("");
@@ -96,7 +140,6 @@ export default function App() {
   useEffect(() => {
     const savedUsers = readJSON<User[]>(STORAGE_KEYS.users, []);
     const savedSession = localStorage.getItem(STORAGE_KEYS.session) ?? "";
-
     setUsers(savedUsers);
     setSessionEmail(savedSession);
   }, []);
@@ -122,18 +165,15 @@ export default function App() {
 
   const filteredTasks = useMemo(() => {
     const text = search.trim().toLowerCase();
-
     return tasks.filter((task) => {
       const matchesText =
         !text ||
         task.title.toLowerCase().includes(text) ||
         task.description.toLowerCase().includes(text);
-
       const matchesStatus =
         statusFilter === "all" || task.status === statusFilter;
       const matchesPriority =
         priorityFilter === "all" || task.priority === priorityFilter;
-
       return matchesText && matchesStatus && matchesPriority;
     });
   }, [tasks, search, statusFilter, priorityFilter]);
@@ -144,11 +184,7 @@ export default function App() {
         acc[status] = filteredTasks.filter((task) => task.status === status);
         return acc;
       },
-      {
-        pending: [],
-        progress: [],
-        completed: [],
-      }
+      { pending: [], progress: [], completed: [] }
     );
   }, [filteredTasks]);
 
@@ -188,25 +224,15 @@ export default function App() {
         setAuthError("Ingresa tu nombre.");
         return;
       }
-
       if (password.length < 6) {
         setAuthError("La contraseña debe tener al menos 6 caracteres.");
         return;
       }
-
       if (users.some((user) => user.email === email)) {
         setAuthError("Ese correo ya está registrado.");
         return;
       }
-
-      const newUser: User = {
-        id: uid(),
-        name,
-        email,
-        password,
-        tasks: [],
-      };
-
+      const newUser: User = { id: uid(), name, email, password, tasks: [] };
       setUsers((prev) => [...prev, newUser]);
       setSessionEmail(email);
       setAuthForm({ name: "", email: "", password: "" });
@@ -217,12 +243,10 @@ export default function App() {
     const user = users.find(
       (item) => item.email === email && item.password === password
     );
-
     if (!user) {
       setAuthError("Credenciales inválidas.");
       return;
     }
-
     setSessionEmail(email);
     setAuthForm({ name: "", email: "", password: "" });
   }
@@ -246,18 +270,13 @@ export default function App() {
 
   function handleTaskSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     const title = taskForm.title.trim();
-    const description = taskForm.description.trim();
-
-    if (!title) {
-      return;
-    }
+    if (!title) return;
 
     const nextTask: Task = {
       id: editingId ?? uid(),
       title,
-      description,
+      description: taskForm.description.trim(),
       dueDate: taskForm.dueDate,
       priority: taskForm.priority,
       status: taskForm.status,
@@ -285,12 +304,8 @@ export default function App() {
   function handleDelete(taskId: string) {
     const confirmed = window.confirm("¿Seguro que deseas eliminar esta tarea?");
     if (!confirmed) return;
-
     updateCurrentUserTasks(tasks.filter((task) => task.id !== taskId));
-
-    if (editingId === taskId) {
-      resetTaskForm();
-    }
+    if (editingId === taskId) resetTaskForm();
   }
 
   function handleToggleComplete(task: Task) {
@@ -315,12 +330,15 @@ export default function App() {
     );
   }
 
+  // ── Vista de autenticación ──────────────────────────────────────────────────
   if (!currentUser) {
     return (
       <div className="auth-page">
         <div className="auth-card">
           <div className="brand">
-            <div className="brand-icon">✓</div>
+            <div className="brand-icon">
+              <IconCheck />
+            </div>
             <div>
               <h1 className="brand-title">TodoTareas</h1>
               <p className="brand-subtitle">
@@ -362,7 +380,6 @@ export default function App() {
                 className="input"
               />
             )}
-
             <input
               name="email"
               type="email"
@@ -371,7 +388,6 @@ export default function App() {
               placeholder="Correo electrónico"
               className="input"
             />
-
             <input
               name="password"
               type="password"
@@ -380,16 +396,14 @@ export default function App() {
               placeholder="Contraseña"
               className="input"
             />
-
             {authError && <div className="error-box">{authError}</div>}
-
             <button type="submit" className="btn btn-primary">
               {authMode === "login" ? "Entrar" : "Crear cuenta"}
             </button>
           </form>
 
           <p className="auth-note">
-            Datos guardados localmente en el navegador con{" "}
+            Datos guardados localmente con{" "}
             <strong>localStorage</strong>.
           </p>
         </div>
@@ -397,6 +411,7 @@ export default function App() {
     );
   }
 
+  // ── Vista principal (dashboard) ─────────────────────────────────────────────
   return (
     <div className="app-shell">
       <header className="header">
@@ -407,19 +422,17 @@ export default function App() {
             un solo lugar.
           </p>
         </div>
-
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="btn btn-secondary"
-        >
+        <button type="button" onClick={handleLogout} className="btn btn-secondary">
           Cerrar sesión
         </button>
       </header>
 
+      {/* ── Estadísticas ── */}
       <section className="stats-grid">
         <div className="stat-card pending-card">
-          <div className="stat-icon">⏳</div>
+          <div className="stat-icon">
+            <IconClock />
+          </div>
           <div>
             <h3>Pendientes</h3>
             <p className="stat-number">
@@ -429,7 +442,9 @@ export default function App() {
         </div>
 
         <div className="stat-card progress-card">
-          <div className="stat-icon">🚀</div>
+          <div className="stat-icon">
+            <IconPlay />
+          </div>
           <div>
             <h3>En progreso</h3>
             <p className="stat-number">
@@ -439,7 +454,9 @@ export default function App() {
         </div>
 
         <div className="stat-card completed-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon">
+            <IconCheckCircle />
+          </div>
           <div>
             <h3>Completadas</h3>
             <p className="stat-number">
@@ -449,7 +466,9 @@ export default function App() {
         </div>
 
         <div className="stat-card total-card">
-          <div className="stat-icon">📋</div>
+          <div className="stat-icon">
+            <IconList />
+          </div>
           <div>
             <h3>Total</h3>
             <p className="stat-number">{tasks.length}</p>
@@ -457,30 +476,28 @@ export default function App() {
         </div>
       </section>
 
+      {/* ── Formulario + Filtros ── */}
       <main className="top-grid">
         <section className="panel">
           <h2 className="section-title">
             {editingId ? "Editar tarea" : "Nueva tarea"}
           </h2>
-
           <form className="form" onSubmit={handleTaskSubmit}>
             <input
               name="title"
               value={taskForm.title}
               onChange={handleTaskChange}
-              placeholder="Título"
+              placeholder="Título de la tarea"
               className="input"
             />
-
             <textarea
               name="description"
               value={taskForm.description}
               onChange={handleTaskChange}
-              placeholder="Descripción"
+              placeholder="Descripción (opcional)"
               rows={4}
               className="textarea"
             />
-
             <div className="grid-2">
               <input
                 name="dueDate"
@@ -489,19 +506,17 @@ export default function App() {
                 onChange={handleTaskChange}
                 className="input"
               />
-
               <select
                 name="priority"
                 value={taskForm.priority}
                 onChange={handleTaskChange}
                 className="input"
               >
-                <option value="low">Baja</option>
-                <option value="medium">Media</option>
-                <option value="high">Alta</option>
+                <option value="low">Prioridad baja</option>
+                <option value="medium">Prioridad media</option>
+                <option value="high">Prioridad alta</option>
               </select>
             </div>
-
             <select
               name="status"
               value={taskForm.status}
@@ -512,12 +527,10 @@ export default function App() {
               <option value="progress">En progreso</option>
               <option value="completed">Completada</option>
             </select>
-
             <div className="button-row">
               <button type="submit" className="btn btn-primary">
                 {editingId ? "Guardar cambios" : "Crear tarea"}
               </button>
-
               {editingId && (
                 <button
                   type="button"
@@ -533,15 +546,13 @@ export default function App() {
 
         <section className="panel">
           <h2 className="section-title">Buscar y filtrar</h2>
-
           <div className="form">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar por título o descripción"
+              placeholder="Buscar por título o descripción…"
               className="input"
             />
-
             <div className="grid-2">
               <select
                 value={statusFilter}
@@ -553,7 +564,6 @@ export default function App() {
                 <option value="progress">En progreso</option>
                 <option value="completed">Completada</option>
               </select>
-
               <select
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
@@ -569,6 +579,7 @@ export default function App() {
         </section>
       </main>
 
+      {/* ── Tablero Kanban ── */}
       <section className="task-columns">
         {STATUS_ORDER.map((status) => (
           <div className="column" key={status}>
@@ -578,7 +589,7 @@ export default function App() {
             </div>
 
             {groupedTasks[status].length === 0 ? (
-              <div className="empty-state">No hay tareas aquí.</div>
+              <div className="empty-state">Sin tareas en esta columna.</div>
             ) : (
               groupedTasks[status].map((task) => (
                 <article className="task-card" key={task.id}>
@@ -589,10 +600,7 @@ export default function App() {
                         {task.description || "Sin descripción"}
                       </p>
                     </div>
-
-                    <span
-                      className={`priority-badge priority-${task.priority}`}
-                    >
+                    <span className={`priority-badge priority-${task.priority}`}>
                       {PRIORITY_LABELS[task.priority]}
                     </span>
                   </div>
@@ -632,10 +640,7 @@ export default function App() {
                     <select
                       value={task.status}
                       onChange={(e) =>
-                        handleStatusChange(
-                          task.id,
-                          e.target.value as TaskStatus
-                        )
+                        handleStatusChange(task.id, e.target.value as TaskStatus)
                       }
                       className="inline-select"
                     >
@@ -643,7 +648,6 @@ export default function App() {
                       <option value="progress">En progreso</option>
                       <option value="completed">Completada</option>
                     </select>
-
                     <select
                       value={task.priority}
                       onChange={(e) =>
