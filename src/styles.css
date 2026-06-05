@@ -1,11 +1,7 @@
-/* =========================================================
-   FUENTES — Sora (display) + Outfit (body)
-   ========================================================= */
+
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap");
 
-/* =========================================================
-   RESET
-   ========================================================= */
+/* RESET */
 *,
 *::before,
 *::after {
@@ -14,9 +10,7 @@
   box-sizing: border-box;
 }
 
-/* =========================================================
-   VARIABLES DE DISEÑO — Tema azul profesional
-   ========================================================= */
+/*VARIABLES DE DISEÑO*/
 :root {
   /* Fondos */
   --bg: #eef3fb;
@@ -90,9 +84,7 @@
   --t-slow: 0.38s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =========================================================
-   BASE
-   ========================================================= */
+/*BASE*/
 html,
 body,
 #root {
@@ -125,9 +117,7 @@ button {
   border: none;
 }
 
-/* =========================================================
-   TIPOGRAFÍA DE MARCA
-   ========================================================= */
+/*TIPOGRAFÍA DE MARCA*/
 .brand-title,
 .page-title,
 .section-title,
@@ -138,9 +128,7 @@ h1, h2, h3, h4 {
   letter-spacing: -0.02em;
 }
 
-/* =========================================================
-   AUTENTICACIÓN
-   ========================================================= */
+/* AUTENTICACIÓN*/
 .auth-page {
   min-height: 100vh;
   display: grid;
@@ -273,9 +261,7 @@ h1, h2, h3, h4 {
   line-height: 1.5;
 }
 
-/* =========================================================
-   FORMULARIOS
-   ========================================================= */
+/*FORMULARIOS*/
 .form {
   display: flex;
   flex-direction: column;
@@ -345,9 +331,7 @@ select.inline-select {
   cursor: pointer;
 }
 
-/* =========================================================
-   BOTONES
-   ========================================================= */
+/*BOTONES*/
 .btn {
   display: inline-flex;
   align-items: center;
@@ -435,9 +419,7 @@ select.inline-select {
   border-color: #b8ccec;
 }
 
-/* =========================================================
-   HEADER DE LA APP
-   ========================================================= */
+/*HEADER DE LA APP*/
 .app-shell {
   max-width: 1380px;
   margin: 0 auto;
@@ -483,9 +465,7 @@ select.inline-select {
   font-weight: 600;
 }
 
-/* =========================================================
-   ESTADÍSTICAS
-   ========================================================= */
+/*ESTADÍSTICAS*/
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -569,9 +549,7 @@ select.inline-select {
 .completed-card .stat-number{ color: var(--completed);}
 .total-card    .stat-number { color: var(--accent);   }
 
-/* =========================================================
-   PANEL SUPERIOR (Formulario + Filtros)
-   ========================================================= */
+/*PANEL SUPERIOR */
 .top-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -601,9 +579,7 @@ select.inline-select {
   border-bottom: 1px solid var(--border-light);
 }
 
-/* =========================================================
-   GRID DE CAMPOS
-   ========================================================= */
+/*GRID DE CAMPOS*/
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -621,9 +597,7 @@ select.inline-select {
   flex: 1;
 }
 
-/* =========================================================
-   TABLERO KANBAN
-   ========================================================= */
+/* TABLERO KANBAN */
 .task-columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -715,9 +689,7 @@ select.inline-select {
   font-size: 0.88rem;
 }
 
-/* =========================================================
-   TARJETAS DE TAREA
-   ========================================================= */
+/*TARJETAS DE TAREA*/
 .task-card {
   position: relative;
   background: var(--card);
@@ -819,9 +791,7 @@ select.inline-select {
   border-radius: var(--r-sm);
 }
 
-/* =========================================================
-   BADGES DE PRIORIDAD
-   ========================================================= */
+/* BADGES DE PRIORIDAD */
 .priority-badge {
   padding: 4px 10px;
   border-radius: var(--r-pill);
@@ -852,17 +822,13 @@ select.inline-select {
   border-color: var(--danger-border);
 }
 
-/* =========================================================
-   SELECCIÓN DE TEXTO
-   ========================================================= */
+/*SELECCIÓN DE TEXTO*/
 ::selection {
   background: rgba(37, 99, 235, 0.14);
   color: var(--text);
 }
 
-/* =========================================================
-   ANIMACIONES
-   ========================================================= */
+/* ANIMACIONES */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -874,9 +840,7 @@ select.inline-select {
   }
 }
 
-/* =========================================================
-   RESPONSIVE — 1100px
-   ========================================================= */
+/* RESPONSIVE — 1100px */
 @media (max-width: 1100px) {
   .task-columns {
     grid-template-columns: 1fr;
@@ -887,9 +851,7 @@ select.inline-select {
   }
 }
 
-/* =========================================================
-   RESPONSIVE — 900px
-   ========================================================= */
+/* RESPONSIVE — 900px*/
 @media (max-width: 900px) {
   .top-grid {
     grid-template-columns: 1fr;
@@ -909,9 +871,7 @@ select.inline-select {
   }
 }
 
-/* =========================================================
-   RESPONSIVE — 640px
-   ========================================================= */
+/* RESPONSIVE — 640px*/
 @media (max-width: 640px) {
   .auth-card {
     padding: 28px 24px;
