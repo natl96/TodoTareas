@@ -28,5 +28,4 @@ npm start
 ## Repositorio
 
 Desarrollado en CodeSandbox y subido a GitHub. 
-🔗https://github.com/natl96/TodoTareas
 Autora: Natalia Marcela Leon Medina
